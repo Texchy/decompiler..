@@ -82,8 +82,13 @@ function Decompile:Type(part, Lines)Wait()
   local type = typeof(part)
   local Script = "", ""
   
-  -- Other types handling...
-
+  if type == "boolean" then
+    Script = Script .. tostring(part)
+  elseif type == "nil" then
+    Script = Script .. "nil"
+  elseif type == "table" then
+    Script, IsFirst = Script .. "{", false
+    
   elseif type == "table" then
     -- Check if the table is named 'toolbar'
     if part == 'toolbar' then
@@ -103,6 +108,9 @@ function Decompile:Type(part, Lines)Wait()
       Script = Script .. An .. "}"
     end
   end
+    
+    local An = IsFirst and "\n" .. Lines or ""
+    Script = Script .. An .. "}"
   elseif type == "string" then
     Script = Script .. '"' .. part .. '"'
   elseif type == "Instance" then
